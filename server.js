@@ -45,6 +45,11 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 });
 
+app.get("/check", (req, res) => {
+    res.json({
+        msg: "Welcome to the Resume Parser API",
+    })
+})
 // Route for uploading resume
 app.post('/upload', upload.single('resume'), async (req, res) => {
     if (!req.file) {
