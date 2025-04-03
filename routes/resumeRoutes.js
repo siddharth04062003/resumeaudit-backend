@@ -17,7 +17,7 @@ const upload = multer({
       cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to filename
     }
   }),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { fileSize: 1 * 1024 * 1024 }, // 5MB limit
 });
 
 // POST route to process the resume and return score
