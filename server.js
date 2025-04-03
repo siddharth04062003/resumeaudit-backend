@@ -99,7 +99,7 @@ app.use((err, req, res, next) => {
         return res.status(400).send({ error: err.message });
     }
     if (err.message.includes('File too large')) {
-        return res.status(413).send({ error: 'File size exceeds the limit. Max size is 5MB.' });
+        return res.status(413).send({ error: 'File size exceeds the limit. Max size is 1MB.' });
     }
     res.status(500).send({ error: 'An unexpected error occurred' });
 });
