@@ -26,14 +26,20 @@ const stopWords = [
 
 // Function to filter stop words from text
 const filterStopWords = (text) => {
-    const words = text.toLowerCase().split(/\s+/);
-    return words.filter(word => !stopWords.includes(word));
+    // Remove punctuation and convert to lowercase
+    const cleanedText = text.toLowerCase().replace(/[^\w\s]/g, '');
+    const words = cleanedText.split(/\s+/);
+
+    return words.filter(word => !stopWords.includes(word) && word.length > 1);
 };
 
 // Function to calculate resume score and suggest missing keywords
 function getResumeScore(resumeText, jobDescription) {
     const resumeWords = new Set(filterStopWords(resumeText)); // Unique words in Resume
     const jobDescriptionWords = new Set(filterStopWords(jobDescription)); // Unique words in JD
+
+    console.log("🔍 Resume Words:", resumeWords);
+    console.log("📄 Job Description Words:", jobDescriptionWords);
 
     // Find common words
     const commonWordsCount = [...resumeWords].filter(word => jobDescriptionWords.has(word)).length;
@@ -42,7 +48,7 @@ function getResumeScore(resumeText, jobDescription) {
     if (jobDescriptionWords.size === 0) return { score: 0, suggestions: [] };
 
     // Calculate score (bounded by 100)
-    const score = Math.min((commonWordsCount / jobDescriptionWords.size) * 100, 100);
+    const score = Math.min((commonWordsCount / jobDescriptionWords.size) * 100, 99.98);
     const roundedScore = Number(score.toFixed(2)); // Round to 2 decimal places
 
     // Suggest missing keywords if score is below 90
@@ -51,6 +57,7 @@ function getResumeScore(resumeText, jobDescription) {
         suggestions = [...jobDescriptionWords].filter(word => !resumeWords.has(word));
     }
 
+    console.log("⚠️ Missing Keywords:", suggestions);
     return { score: roundedScore, suggestions };
 }
 
